@@ -2,24 +2,21 @@
 %bcond_without check
 %global debug_package %{nil}
 
-%global crate tokio-pipe
+%global crate wayrs-client
 
-Name:           rust-tokio-pipe
-Version:        0.2.12
+Name:           rust-wayrs-client
+Version:        1.1.0
 Release:        %autorelease
-Summary:        Asynchronous pipe(2) library using tokio
+Summary:        Simple wayland library
 
-# Upstream license specification: MIT/Apache-2.0
-License:        MIT OR Apache-2.0
-URL:            https://crates.io/crates/tokio-pipe
+License:        MIT
+URL:            https://crates.io/crates/wayrs-client
 Source:         %{crates_source}
 
 BuildRequires:  cargo-rpm-macros >= 24
-BuildRequires:  python3
-BuildRequires:  python-unversioned-command
 
 %global _description %{expand:
-Asynchronous pipe(2) library using tokio.}
+A simple wayland library.}
 
 %description %{_description}
 
@@ -33,8 +30,8 @@ This package contains library source intended for building other packages which
 use the "%{crate}" crate.
 
 %files          devel
-%license %{crate_instdir}/LICENSE-APACHE
-%license %{crate_instdir}/LICENSE-MIT
+# FIXME: no license files detected
+%doc %{crate_instdir}/CHANGELOG.md
 %doc %{crate_instdir}/README.md
 %{crate_instdir}/
 
@@ -50,6 +47,18 @@ use the "default" feature of the "%{crate}" crate.
 %files       -n %{name}+default-devel
 %ghost %{crate_instdir}/Cargo.toml
 
+%package     -n %{name}+tokio-devel
+Summary:        %{summary}
+BuildArch:      noarch
+
+%description -n %{name}+tokio-devel %{_description}
+
+This package contains library source intended for building other packages which
+use the "tokio" feature of the "%{crate}" crate.
+
+%files       -n %{name}+tokio-devel
+%ghost %{crate_instdir}/Cargo.toml
+
 %prep
 %autosetup -n %{crate}-%{version} -p1
 %cargo_prep
@@ -63,10 +72,10 @@ use the "default" feature of the "%{crate}" crate.
 %install
 %cargo_install
 
-#%if %{with check}
-#%check
-#%cargo_test
-#%endif
+%if %{with check}
+%check
+%cargo_test
+%endif
 
 %changelog
 %autochangelog

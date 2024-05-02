@@ -2,24 +2,21 @@
 %bcond_without check
 %global debug_package %{nil}
 
-%global crate tokio-pipe
+%global crate wayrs-core
 
-Name:           rust-tokio-pipe
-Version:        0.2.12
+Name:           rust-wayrs-core
+Version:        1.0.0
 Release:        %autorelease
-Summary:        Asynchronous pipe(2) library using tokio
+Summary:        Core Wayland types for wayrs
 
-# Upstream license specification: MIT/Apache-2.0
-License:        MIT OR Apache-2.0
-URL:            https://crates.io/crates/tokio-pipe
+License:        MIT
+URL:            https://crates.io/crates/wayrs-core
 Source:         %{crates_source}
 
 BuildRequires:  cargo-rpm-macros >= 24
-BuildRequires:  python3
-BuildRequires:  python-unversioned-command
 
 %global _description %{expand:
-Asynchronous pipe(2) library using tokio.}
+The core Wayland types for wayrs.}
 
 %description %{_description}
 
@@ -33,8 +30,7 @@ This package contains library source intended for building other packages which
 use the "%{crate}" crate.
 
 %files          devel
-%license %{crate_instdir}/LICENSE-APACHE
-%license %{crate_instdir}/LICENSE-MIT
+# FIXME: no license files detected
 %doc %{crate_instdir}/README.md
 %{crate_instdir}/
 
@@ -63,10 +59,10 @@ use the "default" feature of the "%{crate}" crate.
 %install
 %cargo_install
 
-#%if %{with check}
-#%check
-#%cargo_test
-#%endif
+%if %{with check}
+%check
+%cargo_test
+%endif
 
 %changelog
 %autochangelog
