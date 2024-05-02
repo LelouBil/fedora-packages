@@ -1,0 +1,5 @@
+results_*
+*.tar.gz
+*.crate
+*.srpm
+*.rpm
